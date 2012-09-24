@@ -123,6 +123,18 @@ namespace dotRant
         public event EventHandler<CommandEventArgs> RawMessageIn;
         public event EventHandler<CommandEventArgs> RawMessageOut;
 
+        private void OnRawMessageIn(string message)
+        {
+            if (RawMessageIn != null)
+                RawMessageIn(this, new CommandEventArgs(message));
+        }
+
+        private void OnRawMessageOut(string message)
+        {
+            if (RawMessageOut != null)
+                RawMessageOut(this, new CommandEventArgs(message));
+        }
+
         public string Nick
         {
             get { return _nick; }
@@ -141,25 +153,14 @@ namespace dotRant
             return;
         }
 
-        private void OnRawMessageIn(string message)
-        {
-            if (RawMessageIn != null)
-                RawMessageIn(this, new CommandEventArgs(message));
-        }
-
-        private void OnRawMessageOut(string message)
-        {
-            if (RawMessageOut != null)
-                RawMessageOut(this, new CommandEventArgs(message));
-        }
-
         internal async Task Connect(IConnectionFactory connectionFactory, IIrcIdentity identity)
         {
             lock (this)
             {
-                if (_state == State.Connected)
+                State state = _state;
+                if (state == State.Connected)
                     throw new InvalidOperationException("Already connected");
-                else if (_state == State.Connecting)
+                else if (state == State.Connecting)
                     throw new InvalidOperationException("Already connecting");
 
                 _state = State.Connecting;
