@@ -10,6 +10,7 @@ namespace dotRant
 {
     partial class IrcConnection
     {
+        #region Setup
         static readonly Dictionary<string, MethodInfo> _handlerInfos = new Dictionary<string, MethodInfo>();
         static readonly Dictionary<string, Func<IrcConnection, string, string, string[], Task>> _handlers = new Dictionary<string, Func<IrcConnection, string, string, string[], Task>>();
         static readonly MethodInfo _defaultHandler;
@@ -64,6 +65,7 @@ namespace dotRant
                 }
             }
         }
+        #endregion
 
         [IrcCommand("$DEFAULT$")]
         async Task DefaultHandler(string prefix, string command, string[] args)
