@@ -32,13 +32,17 @@ namespace dotRant.TestWpfClient
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _fact = new dotRant.Net45.IrcConnectionFactory();
-            var conn = _fact.Create("irc.hitos.no");
+            var conn = _fact.Create("irc.irchighway.net");
             ObservableCollection<string> log = new ObservableCollection<string>();
             OutView.ItemsSource = log;
             conn.RawMessageIn += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, ">> " + ev.Command)));
             conn.RawMessageOut += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, "<< " + ev.Command)));
             await conn.Connect();
             MessageBox.Show("Connected");
+            var channel = await conn.Channels.Join("#watashiwaten");
+            MessageBox.Show("Joined");
+            await channel.Send("Found users: " + String.Join(", ", channel.Users));
+            MessageBox.Show("Sent");
         }
     }
 }

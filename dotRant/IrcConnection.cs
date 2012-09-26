@@ -87,6 +87,20 @@ namespace dotRant
             }
         }
 
+        internal struct Client
+        {
+            internal readonly string _nick;
+            internal readonly string _login;
+            internal readonly string _address;
+
+            public Client(string nick, string login, string address)
+            {
+                _nick = nick;
+                _login = login;
+                _address = address;
+            }
+        }
+
         static int botCount = 0;
 
         readonly int _botCount;
@@ -100,6 +114,8 @@ namespace dotRant
         StreamWriter _writer;
         ILogger _logger;
         IConnectionFactory _connFactory;
+
+        readonly ChannelList _channelList;
 
         static CancellationToken _outCancelToken = new CancellationToken(true);
         static readonly object _outLock = new object();
@@ -119,6 +135,7 @@ namespace dotRant
             _state = State.Offline;
             _logger = new IrcLogger(this, loggerFactory.GetLogger(this));
             _connFactory = connectionFactory;
+            _channelList = new ChannelList(this);
         }
 
         public event EventHandler<CommandEventArgs> RawMessageIn;
@@ -134,6 +151,11 @@ namespace dotRant
         {
             if (RawMessageOut != null)
                 RawMessageOut(this, new CommandEventArgs(message));
+        }
+
+        public IChannelList Channels
+        {
+            get { return _channelList; }
         }
 
         public string Nick
@@ -154,6 +176,13 @@ namespace dotRant
             return;
         }
 
+        private void ClearAll()
+        {
+            _nicks.Clear();
+            _nicksRev.Clear();
+            _channels.Clear();
+        }
+
         internal async Task Connect(IConnectionFactory connectionFactory, IIrcIdentity identity)
         {
             lock (this)
@@ -167,6 +196,7 @@ namespace dotRant
                 _state = State.Connecting;
             }
 
+            ClearAll();
             _logger.Debug("Initializing connection");
             _stream = await connectionFactory.Connect(_hostname, _port, _useSsl);
 
@@ -293,6 +323,17 @@ namespace dotRant
             return new Command(prefix, name, args.ToArray());
         }
 
+        private Client ParseClient(string clientString)
+        {
+            int pos = clientString.IndexOf('!');
+            string nick = clientString.Substring(0, pos);
+            clientString = clientString.Substring(pos + 1);
+            pos = clientString.IndexOf('@');
+            string login = clientString.Substring(0, pos);
+            clientString = clientString.Substring(pos + 1);
+            return new Client(nick, login, clientString);
+        }
+
         private void StartOutboundThread()
         {
             lock (_outLock)
@@ -362,7 +403,7 @@ namespace dotRant
             cmd._tcs.SetResult(true);
         }
 
-        private Task SendCommand(string str, params Parameter[] args)
+        internal Task SendCommand(string str, params Parameter[] args)
         {
             StringBuilder sb = new StringBuilder(str);
             for (var i = 0; i < args.Length; i++)

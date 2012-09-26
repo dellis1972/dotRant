@@ -33,13 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ChannelList.cs" />
     <Compile Include="CommandEventArgs.cs" />
     <Compile Include="Exceptions\IrcException.cs" />
+    <Compile Include="IChannelList.cs" />
     <Compile Include="IConnectionFactory.cs" />
+    <Compile Include="IIrcChannel.cs" />
     <Compile Include="IIrcConnection.cs" />
     <Compile Include="IIrcIdentity.cs" />
+    <Compile Include="IIrcTarget.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="IrcChannel.cs" />
     <Compile Include="IrcCommandAttribute.cs" />
+    <Compile Include="IrcConnection.Channels.cs" />
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcConnection.Handlers.cs" />
     <Compile Include="IrcConnectionFactory.cs" />

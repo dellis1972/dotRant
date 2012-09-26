@@ -5,7 +5,7 @@ using System.Text;
 
 namespace dotRant
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     class IrcCommandAttribute : Attribute
     {
         string _command;
