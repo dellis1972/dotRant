@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -58,8 +58,7 @@ namespace dotRant
             _handlerInfos.Clear();
             foreach (var mi in typeof(IrcConnection).GetRuntimeMethods())
             {
-                var attr = mi.GetCustomAttribute<IrcCommandAttribute>();
-                if (attr != null)
+                foreach (var attr in mi.GetCustomAttributes<IrcCommandAttribute>())
                 {
                     _handlerInfos.Add(attr.Command, mi);
                 }
