@@ -39,7 +39,9 @@
     <Compile Include="IIrcConnection.cs" />
     <Compile Include="IIrcIdentity.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="IrcCommandAttribute.cs" />
     <Compile Include="IrcConnection.cs" />
+    <Compile Include="IrcConnection.Handlers.cs" />
     <Compile Include="IrcConnectionFactory.cs" />
     <Compile Include="IrcLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

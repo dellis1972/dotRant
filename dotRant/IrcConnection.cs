@@ -5,10 +5,11 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace dotRant
 {
-    class IrcConnection : IIrcConnection, IIrcIdentity
+    partial class IrcConnection : IIrcConnection, IIrcIdentity
     {
         const string VERSION = "dotRant 0.1";
         const string CRLF = "\r\n";
@@ -379,12 +380,7 @@ namespace dotRant
 
         private async Task HandleCmd(Command cmd)
         {
-            switch (cmd._command)
-            {
-                case "PING":
-                    await SendCommand("PONG", cmd._parameters[0].AsMultiParameter());
-                    break;
-            }
+            await HandleCommand(this, cmd._prefix, cmd._command, cmd._parameters.ToArray());
         }
     }
 
