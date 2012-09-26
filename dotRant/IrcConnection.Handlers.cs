@@ -17,7 +17,7 @@ namespace dotRant
 
         static IrcConnection()
         {
-            PupulateHandlerInfos();
+            PopulateHandlerInfos();
             _defaultHandler = _handlerInfos["$DEFAULT$"];
         }
 
@@ -53,7 +53,7 @@ namespace dotRant
             return handler(conn, prefix, command, args);
         }
 
-        static void PupulateHandlerInfos()
+        static void PopulateHandlerInfos()
         {
             _handlerInfos.Clear();
             foreach (var mi in typeof(IrcConnection).GetRuntimeMethods())
