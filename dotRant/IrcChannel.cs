@@ -15,12 +15,15 @@ namespace dotRant
             Joined
         }
 
-        private readonly IrcConnection _connection;
-        private readonly string _name;
-        private readonly List<Guid> _users;
-        private readonly Dictionary<Guid, string> _userStates;
+        readonly IrcConnection _connection;
+        readonly string _name;
+        readonly List<Guid> _users;
+        readonly Dictionary<Guid, string> _userStates;
+
         internal readonly TaskCompletionSource<IIrcChannel> _loaded;
         internal volatile State _state;
+
+        internal string _topic = "";
 
         public IrcChannel(IrcConnection connection, string name)
         {
@@ -35,6 +38,18 @@ namespace dotRant
         public string Name
         { 
             get { return _name; } 
+        }
+
+        public string Topic
+        {
+            get { return _topic; }
+            set
+            {
+                if (_topic != value)
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
 
         public IIrcConnection Connection
