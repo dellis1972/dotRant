@@ -101,6 +101,34 @@ namespace dotRant
             }
         }
 
+
+        [IrcCommand("332")]
+        async Task HandleJoinTopic(string prefix, string command, string[] args)
+        {
+            //332 <nick> <channel> :<topic>
+            if (args[0] == _nick)
+            {
+                lock (_channels)
+                {
+                    string channelName = args[1];
+                    IrcChannel channel;
+
+                    if(_channels.TryGetValue(channelName, out channel))
+                    {
+                        channel._topic = args[2];
+                        return;
+                    }
+                    throw new InvalidOperationException();
+                }
+            }
+        }
+
+        [IrcCommand("333")]
+        async Task HandleJoinTopicTime(string prefix, string command, string[] args)
+        {
+
+        }
+
         [IrcCommand("353")]
         [IrcCommand("366")]
         async Task HandleNameList(string prefix, string command, string[] args)

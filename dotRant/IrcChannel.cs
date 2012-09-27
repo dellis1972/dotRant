@@ -24,6 +24,7 @@ namespace dotRant
         internal volatile State _state;
 
         internal string _topic = "";
+        internal DateTime _topicTime = DateTime.MinValue;
 
         public IrcChannel(IrcConnection connection, string name)
         {
@@ -36,8 +37,8 @@ namespace dotRant
         }
 
         public string Name
-        { 
-            get { return _name; } 
+        {
+            get { return _name; }
         }
 
         public string Topic
@@ -50,6 +51,11 @@ namespace dotRant
                     throw new NotImplementedException();
                 }
             }
+        }
+
+        public DateTime TopicTime
+        {
+            get { return _topicTime; }
         }
 
         public IIrcConnection Connection
