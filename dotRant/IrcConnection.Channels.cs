@@ -122,6 +122,7 @@ namespace dotRant
                             {
                                 // :<server> 366 <nick> <channel> :End of /NAMES list.
                                 channel._loaded.SetResult(channel);
+                                return;
                             }
                         }
                     }

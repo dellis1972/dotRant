@@ -140,6 +140,7 @@ namespace dotRant
 
         public event EventHandler<CommandEventArgs> RawMessageIn;
         public event EventHandler<CommandEventArgs> RawMessageOut;
+        public event EventHandler<ExceptionEventArgs> UnhandledException;
 
         private void OnRawMessageIn(string message)
         {
@@ -151,6 +152,12 @@ namespace dotRant
         {
             if (RawMessageOut != null)
                 RawMessageOut(this, new CommandEventArgs(message));
+        }
+
+        private void OnUnhandledException(IrcException exception)
+        {
+            if (UnhandledException != null)
+                UnhandledException(this, new ExceptionEventArgs(exception));
         }
 
         public IChannelList Channels
@@ -383,16 +390,16 @@ namespace dotRant
 
         private void StartInboundThread()
         {
-            _reader.ReadLineAsync().ContinueWith<Task>(InboundRead);
-        }
-
-        private async Task InboundRead(Task<string> newLine)
-        {
-            string val = newLine.Result;
-            OnRawMessageIn(val);
-            var cmd = ParseCmd(val);
-            await HandleCmd(cmd);
-            StartInboundThread();
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var line = await _reader.ReadLineAsync();
+                    OnRawMessageIn(line);
+                    var cmd = ParseCmd(line);
+                    await HandleCmd(cmd);
+                }
+            });
         }
 
         private async Task SendCommand(OutCommand cmd)
@@ -426,7 +433,18 @@ namespace dotRant
 
         private async Task HandleCmd(Command cmd)
         {
-            await HandleCommand(this, cmd._prefix, cmd._command, cmd._parameters.ToArray());
+            try
+            {
+                await HandleCommand(this, cmd._prefix, cmd._command, cmd._parameters.ToArray());
+            }
+            catch (IrcException e)
+            {
+                OnUnhandledException(e);
+            }
+            catch (Exception e)
+            {
+                OnUnhandledException(new IrcException("An error occured during handling of message " + cmd.ToString(), e));
+            }
         }
     }
 
