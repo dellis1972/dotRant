@@ -149,24 +149,24 @@ namespace dotRant
         async Task HandleTopic(string prefix, string command, string[] args)
         {
             //TOPIC <channel> :<topic>
-            if (args[0] == _nick)
+            lock (_channels)
             {
-                lock (_channels)
+                var client = ParseClient(prefix);
+
+                string channelName = args[0];
+                IrcChannel channel;
+
+                if (_channels.TryGetValue(channelName, out channel))
                 {
-                    var client = ParseClient(prefix);
+                    string oldTopic = channel._topic;
 
-                    string channelName = args[0];
-                    IrcChannel channel;
-
-                    if (_channels.TryGetValue(channelName, out channel))
-                    {
-                        channel._topic = args[1];
-                        channel._topicCreator = client._nick;
-                        channel._topicTime = DateTime.Now;
-                        return;
-                    }
-                    throw new InvalidOperationException();
+                    channel._topic = args[1];
+                    channel._topicCreator = client._nick;
+                    channel._topicTime = DateTime.Now;
+                    OnChannelTopicChanged(channel, oldTopic);
+                    return;
                 }
+                throw new InvalidOperationException();
             }
         }
 

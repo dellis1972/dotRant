@@ -142,6 +142,7 @@ namespace dotRant
         public event EventHandler<CommandEventArgs> RawMessageOut;
         public event EventHandler<ExceptionEventArgs> UnhandledException;
         public event EventHandler<ChannelEventArgs> Join;
+        public event EventHandler<ChannelTopicEventArgs> ChannelTopicChanged;
 
         private void OnRawMessageIn(string message)
         {
@@ -165,6 +166,12 @@ namespace dotRant
         {
             if (Join != null)
                 Join(this, new ChannelEventArgs(channel));
+        }
+
+        private void OnChannelTopicChanged(IrcChannel channel, string oldTopic)
+        {
+            if (ChannelTopicChanged != null)
+                ChannelTopicChanged(this, new ChannelTopicEventArgs(channel, oldTopic));
         }
 
         public IChannelList Channels
