@@ -87,5 +87,14 @@ namespace dotRant {
                 return ResourceManager.GetString("NickChangeWhileConnecting", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attempted to leave a channel you are not in.
+        /// </summary>
+        internal static string PartedNonJoinedChannel {
+            get {
+                return ResourceManager.GetString("PartedNonJoinedChannel", resourceCulture);
+            }
+        }
     }
 }

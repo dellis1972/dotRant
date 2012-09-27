@@ -114,7 +114,9 @@ namespace dotRant
                     {
                         _channels.Remove(channel.Name);
                         OnPart(channel);
+                        return;
                     }
+                    throw new InvalidOperationException(Resources.PartedNonJoinedChannel);
                 }
             }
         }

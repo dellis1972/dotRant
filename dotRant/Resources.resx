@@ -126,4 +126,7 @@
   <data name="NickChangeWhileConnecting" xml:space="preserve">
     <value>Can't change nick while connecting</value>
   </data>
+  <data name="PartedNonJoinedChannel" xml:space="preserve">
+    <value>Attempted to leave a channel you are not in</value>
+  </data>
 </root>
