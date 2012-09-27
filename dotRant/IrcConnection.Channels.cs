@@ -101,6 +101,24 @@ namespace dotRant
             }
         }
 
+        [IrcCommand("PART")]
+        async Task HandlePart(string prefix, string command, string[] args)
+        {
+            var client = ParseClient(prefix);
+            if (client._nick == _nick)
+            {
+                lock (_channels)
+                {
+                    IrcChannel channel;
+                    if (_channels.TryGetValue(args[0], out channel))
+                    {
+                        _channels.Remove(channel.Name);
+                        OnPart(channel);
+                    }
+                }
+            }
+        }
+
 
         [IrcCommand("332")]
         async Task HandleJoinTopic(string prefix, string command, string[] args)

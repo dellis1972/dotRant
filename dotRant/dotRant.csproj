@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="ChannelEventArgs.cs" />
     <Compile Include="ChannelList.cs" />
+    <Compile Include="ChannelTopicEventArgs.cs" />
     <Compile Include="CommandEventArgs.cs" />
     <Compile Include="ExceptionEventArgs.cs" />
     <Compile Include="Exceptions\IrcException.cs" />

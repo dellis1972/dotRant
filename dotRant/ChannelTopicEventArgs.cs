@@ -5,7 +5,7 @@ using System.Text;
 
 namespace dotRant
 {
-    class ChannelTopicEventArgs : ChannelEventArgs
+    public class ChannelTopicEventArgs : ChannelEventArgs
     {
         readonly string _oldTopic;
         public ChannelTopicEventArgs(IIrcChannel channel, string oldTopic)
