@@ -37,12 +37,13 @@ namespace dotRant.TestWpfClient
             OutView.ItemsSource = log;
             conn.RawMessageIn += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, ">> " + ev.Command)));
             conn.RawMessageOut += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, "<< " + ev.Command)));
+            conn.Join += (s, ev) => Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("Joined new channel: " + ev.Channel.Name)));
             await conn.Connect();
-            MessageBox.Show("Connected");
+            //MessageBox.Show("Connected");
             var channel = await conn.Channels.Join("#watashiwaten");
-            MessageBox.Show("Joined");
-            await channel.Send("Found users: " + String.Join(", ", channel.Users));
-            MessageBox.Show("Sent");
+            //MessageBox.Show("Joined");
+            //await channel.Send("Found users: " + String.Join(", ", channel.Users));
+            //MessageBox.Show("Sent");
         }
 
         private async void SendBtn_Click(object sender, RoutedEventArgs e)

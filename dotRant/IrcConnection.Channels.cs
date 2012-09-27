@@ -121,7 +121,9 @@ namespace dotRant
                             else if(command == "366")
                             {
                                 // :<server> 366 <nick> <channel> :End of /NAMES list.
+                                channel._state = IrcChannel.State.Joined;
                                 channel._loaded.SetResult(channel);
+                                OnJoin(channel);
                                 return;
                             }
                         }

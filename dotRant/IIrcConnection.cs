@@ -10,6 +10,9 @@ namespace dotRant
 
         event EventHandler<CommandEventArgs> RawMessageIn;
         event EventHandler<CommandEventArgs> RawMessageOut;
+        event EventHandler<ChannelEventArgs> Join;
+
+        event EventHandler<ExceptionEventArgs> UnhandledException;
 
         Task SendRawCommand(string text);
     }

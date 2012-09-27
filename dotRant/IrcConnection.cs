@@ -141,6 +141,7 @@ namespace dotRant
         public event EventHandler<CommandEventArgs> RawMessageIn;
         public event EventHandler<CommandEventArgs> RawMessageOut;
         public event EventHandler<ExceptionEventArgs> UnhandledException;
+        public event EventHandler<ChannelEventArgs> Join;
 
         private void OnRawMessageIn(string message)
         {
@@ -158,6 +159,12 @@ namespace dotRant
         {
             if (UnhandledException != null)
                 UnhandledException(this, new ExceptionEventArgs(exception));
+        }
+
+        private void OnJoin(IrcChannel channel)
+        {
+            if (Join != null)
+                Join(this, new ChannelEventArgs(channel));
         }
 
         public IChannelList Channels
