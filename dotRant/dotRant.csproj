@@ -49,7 +49,7 @@
     <Compile Include="IrcCommandAttribute.cs" />
     <Compile Include="IrcConnection.Channels.cs" />
     <Compile Include="IrcConnection.cs" />
-    <Compile Include="IrcConnection.Handlers.cs" />
+    <Compile Include="IrcConnection.Handling.cs" />
     <Compile Include="IrcConnectionFactory.cs" />
     <Compile Include="IrcLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

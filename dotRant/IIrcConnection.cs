@@ -7,6 +7,7 @@ namespace dotRant
     {
         Task Connect(IConnectionFactory connectionFactory = null);
         IChannelList Channels { get; }
+        string Nick { get; set; }
 
         event EventHandler<CommandEventArgs> RawMessageIn;
         event EventHandler<CommandEventArgs> RawMessageOut;
