@@ -56,7 +56,7 @@ namespace dotRant
 
         public string TopicCreator
         {
-            get { return _topicCreator };
+            get { return _topicCreator; }
         }
 
         public DateTime TopicTime
