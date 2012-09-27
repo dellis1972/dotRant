@@ -126,7 +126,7 @@ namespace dotRant
         [IrcCommand("333")]
         async Task HandleJoinTopicTime(string prefix, string command, string[] args)
         {
-            //332 <nick> <channel> :<topic>
+            //333 <channel> <topic creator nick> <topic created time>
             if (args[0] == _nick)
             {
                 lock (_channels)
@@ -138,6 +138,31 @@ namespace dotRant
                     {
                         channel._topicTime = Utils.UnixTimeStampToDateTime(double.Parse(args[3]));
                         channel._topicCreator = args[2];
+                        return;
+                    }
+                    throw new InvalidOperationException();
+                }
+            }
+        }
+
+        [IrcCommand("TOPIC")]
+        async Task HandleTopic(string prefix, string command, string[] args)
+        {
+            //TOPIC <channel> :<topic>
+            if (args[0] == _nick)
+            {
+                lock (_channels)
+                {
+                    var client = ParseClient(prefix);
+
+                    string channelName = args[0];
+                    IrcChannel channel;
+
+                    if (_channels.TryGetValue(channelName, out channel))
+                    {
+                        channel._topic = args[1];
+                        channel._topicCreator = client._nick;
+                        channel._topicTime = DateTime.Now;
                         return;
                     }
                     throw new InvalidOperationException();
