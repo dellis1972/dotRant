@@ -411,9 +411,14 @@ namespace dotRant
                 sb.Append(' ').Append(args[i]);
             }
 
+            return SendRawCommand(sb.ToString());
+        }
+
+        public Task SendRawCommand(string rawCommand)
+        {
             var tcs = new TaskCompletionSource<bool>();
             lock (_outLock)
-                _outQueue.Enqueue(new Tuple<IrcConnection, OutCommand>(this, new OutCommand(tcs, sb.ToString())));
+                _outQueue.Enqueue(new Tuple<IrcConnection, OutCommand>(this, new OutCommand(tcs, rawCommand)));
             _outWaiter.Set();
 
             return tcs.Task;

@@ -3,6 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
     <Grid>
-        <ListView x:Name="OutView"></ListView>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="OutView" Grid.ColumnSpan="2"></ListView>
+        <TextBox x:Name="Cmd" Grid.Row="1"></TextBox>
+        <Button Content="Send" Grid.Row="1" Grid.Column="1" x:Name="SendBtn" Click="SendBtn_Click" />
     </Grid>
 </Window>

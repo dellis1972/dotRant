@@ -10,5 +10,7 @@ namespace dotRant
 
         event EventHandler<CommandEventArgs> RawMessageIn;
         event EventHandler<CommandEventArgs> RawMessageOut;
+
+        Task SendRawCommand(string text);
     }
 }
