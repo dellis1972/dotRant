@@ -51,5 +51,11 @@ namespace dotRant.TestWpfClient
             Cmd.Text = "";
             await _conn.SendRawCommand(text);
         }
+
+        private void Cmd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                SendBtn_Click(sender, new RoutedEventArgs());
+        }
     }
 }

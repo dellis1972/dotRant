@@ -12,7 +12,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ListView x:Name="OutView" Grid.ColumnSpan="2"></ListView>
-        <TextBox x:Name="Cmd" Grid.Row="1"></TextBox>
+        <TextBox x:Name="Cmd" Grid.Row="1" KeyDown="Cmd_KeyDown" />
         <Button Content="Send" Grid.Row="1" Grid.Column="1" x:Name="SendBtn" Click="SendBtn_Click" />
     </Grid>
 </Window>
