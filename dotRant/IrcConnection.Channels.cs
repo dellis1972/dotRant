@@ -90,7 +90,13 @@ namespace dotRant
                             return;
                         }
                     }
-                    throw new InvalidOperationException();
+                    else
+                    {
+                        channel = new IrcChannel(this, args[0]);
+                        _channels.Add(args[0], channel);
+                        channel._state = IrcChannel.State.WaitingForNames;
+                        return;
+                    }
                 }
             }
         }
