@@ -77,5 +77,16 @@ namespace dotRant
         {
             SendCommand("PONG", args[0]);
         }
+
+        [IrcCommand("NICK")]
+        async Task HandleNickChange(string prefix, string command, string[] args)
+        {
+            var client = ParseClient(prefix);
+
+            if(_nick == client._nick)
+            {
+                _nick = args[0];
+            }
+        }
     }
 }
