@@ -41,6 +41,9 @@ namespace dotRant.TestWpfClient
             await conn.Connect();
             //MessageBox.Show("Connected");
             var channel = await conn.Channels.Join("#watashiwaten");
+            await Task.Delay(TimeSpan.FromMinutes(1));
+            await channel.Part();
+            MessageBox.Show("Parted");
             //MessageBox.Show("Joined");
             //await channel.Send("Found users: " + String.Join(", ", channel.Users));
             //MessageBox.Show("Sent");
