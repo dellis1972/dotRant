@@ -9,5 +9,7 @@ namespace dotRant
     public interface IIrcChannel : IIrcTarget
     {
         IList<string> Users { get; }
+
+        Task Part();
     }
 }

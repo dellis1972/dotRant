@@ -38,6 +38,19 @@ namespace dotRant
             return channel._loaded.Task;
         }
 
+        internal Task PartChannel(string name)
+        {
+            lock (_channels)
+            {
+                var channel = GetChannel(name);
+                channel._state = IrcChannel.State.Parting;
+                SendCommand("PART", name);
+
+                channel._loaded = new TaskCompletionSource<IIrcChannel>();
+                return channel._loaded.Task;
+            }
+        }
+
         internal IrcChannel GetChannel(string name)
         {
             lock (_channels)
@@ -112,6 +125,11 @@ namespace dotRant
                     IrcChannel channel;
                     if (_channels.TryGetValue(args[0], out channel))
                     {
+                        if (channel._state == IrcChannel.State.Parting)
+                        {
+                            channel._loaded.SetResult(null);
+                        }
+
                         _channels.Remove(channel.Name);
                         OnPart(channel);
                         return;

@@ -12,7 +12,8 @@ namespace dotRant
         {
             WaitingForJoin,
             WaitingForNames,
-            Joined
+            Joined,
+            Parting
         }
 
         readonly IrcConnection _connection;
@@ -20,7 +21,7 @@ namespace dotRant
         readonly List<Guid> _users;
         readonly Dictionary<Guid, string> _userStates;
 
-        internal readonly TaskCompletionSource<IIrcChannel> _loaded;
+        internal volatile TaskCompletionSource<IIrcChannel> _loaded;
         internal volatile State _state;
 
         internal string _topic = "";
@@ -62,6 +63,11 @@ namespace dotRant
         public DateTime TopicTime
         {
             get { return _topicTime; }
+        }
+
+        public Task Part() 
+        {
+            return _connection.PartChannel(_name);
         }
 
         public IIrcConnection Connection
