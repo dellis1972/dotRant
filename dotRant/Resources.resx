@@ -123,4 +123,7 @@
   <data name="CouldNotConnect" xml:space="preserve">
     <value>Could not connect to server: {0}</value>
   </data>
+  <data name="NickChangeWhileConnecting" xml:space="preserve">
+    <value>Can't change nick while connecting</value>
+  </data>
 </root>

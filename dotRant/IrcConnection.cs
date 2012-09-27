@@ -175,6 +175,22 @@ namespace dotRant
         public string Nick
         {
             get { return _nick; }
+            set
+            {
+                if (_nick != value)
+                {
+                    lock (this)
+                    {
+                        State state = _state;
+                        if (state == State.Connecting)
+                            throw new InvalidOperationException(Resources.NickChangeWhileConnecting);
+                        if (state == State.Offline)
+                            _nick = value;
+                        else if (state == State.Connected)
+                            SendCommand("NICK", value);
+                    }
+                }
+            }
         }
 
         string IIrcIdentity.Login

@@ -78,5 +78,14 @@ namespace dotRant {
                 return ResourceManager.GetString("CouldNotConnect", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t change nick while connecting.
+        /// </summary>
+        internal static string NickChangeWhileConnecting {
+            get {
+                return ResourceManager.GetString("NickChangeWhileConnecting", resourceCulture);
+            }
+        }
     }
 }
