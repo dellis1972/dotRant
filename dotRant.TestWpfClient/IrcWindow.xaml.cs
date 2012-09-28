@@ -41,7 +41,7 @@ namespace dotRant.TestWpfClient
 
                 if (args[0] == "/join" || args[0] == "/j")
                 {
-                    _conn.SendRawCommand("JOIN " + args[1]);
+                    _conn.Channels.Join(args[1]);
                 }
                 else
                 {
