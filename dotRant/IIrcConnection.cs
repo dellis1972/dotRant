@@ -12,7 +12,7 @@ namespace dotRant
         event EventHandler<CommandEventArgs> RawMessageIn;
         event EventHandler<CommandEventArgs> RawMessageOut;
         event EventHandler<ChannelEventArgs> Join;
-        event EventHandler<ChannelEventArgs> Part;
+        event EventHandler<ChannelNameEventArgs> Part;
         event EventHandler<ChannelTopicEventArgs> ChannelTopicChanged;
 
         event EventHandler<ExceptionEventArgs> UnhandledException;

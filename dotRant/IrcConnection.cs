@@ -142,7 +142,7 @@ namespace dotRant
         public event EventHandler<CommandEventArgs> RawMessageOut;
         public event EventHandler<ExceptionEventArgs> UnhandledException;
         public event EventHandler<ChannelEventArgs> Join;
-        public event EventHandler<ChannelEventArgs> Part;
+        public event EventHandler<ChannelNameEventArgs> Part;
         public event EventHandler<ChannelTopicEventArgs> ChannelTopicChanged;
 
         private void OnRawMessageIn(string message)
@@ -175,10 +175,10 @@ namespace dotRant
                 ChannelTopicChanged(this, new ChannelTopicEventArgs(channel, oldTopic));
         }
 
-        private void OnPart(IrcChannel channel)
+        private void OnPart(string channelName)
         {
             if (Part != null)
-                Part(this, new ChannelEventArgs(channel));
+                Part(this, new ChannelNameEventArgs(channelName));
         }
 
         public IChannelList Channels

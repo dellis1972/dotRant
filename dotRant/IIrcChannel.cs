@@ -9,6 +9,9 @@ namespace dotRant
     public interface IIrcChannel : IIrcTarget
     {
         IList<string> Users { get; }
+        string Topic { get; set; }
+        string TopicCreator { get; }
+        DateTime TopicTime { get; }
 
         Task Part();
     }

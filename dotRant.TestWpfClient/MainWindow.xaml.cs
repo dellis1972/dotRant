@@ -37,13 +37,12 @@ namespace dotRant.TestWpfClient
             OutView.ItemsSource = log;
             conn.RawMessageIn += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, ">> " + ev.Command)));
             conn.RawMessageOut += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, "<< " + ev.Command)));
-            conn.Join += (s, ev) => Dispatcher.BeginInvoke(new Action(() => MessageBox.Show("Joined new channel: " + ev.Channel.Name)));
+            conn.Join += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, "!! Joined channel: " + ev.Channel.Name)));
+            conn.Part += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, "!! Parted channel: " + ev.ChannelName)));
+            conn.ChannelTopicChanged += (s, ev) => Dispatcher.BeginInvoke(new Action(() => log.Insert(0, String.Format("!! Topic set for {0} by {1} to \"{2}\"", ev.Channel.Name, ev.Channel.TopicCreator, ev.Channel.Topic))));
             await conn.Connect();
             //MessageBox.Show("Connected");
             var channel = await conn.Channels.Join("#watashiwaten");
-            await Task.Delay(TimeSpan.FromMinutes(1));
-            await channel.Part();
-            MessageBox.Show("Parted");
             //MessageBox.Show("Joined");
             //await channel.Send("Found users: " + String.Join(", ", channel.Users));
             //MessageBox.Show("Sent");
