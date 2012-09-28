@@ -22,7 +22,9 @@ namespace dotRant.TestWpfClient
             _buffers = new ObservableCollection<BufferViewModel>();
 
             foreach (var chann in _conn.Channels)
+            {
                 _buffers.Add(new ChannelViewModel(_dispatcher, chann));
+            }
 
             _conn.NickChanged += _conn_NickChanged;
             _conn.Join += _conn_Join;

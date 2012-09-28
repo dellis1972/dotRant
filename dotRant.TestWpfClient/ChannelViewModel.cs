@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Threading;
@@ -9,16 +10,25 @@ namespace dotRant.TestWpfClient
     class ChannelViewModel : BufferViewModel
     {
         IIrcChannel _channel;
+        readonly ObservableCollection<string> _users;
 
         public ChannelViewModel(Dispatcher dispatcher, IIrcChannel channel)
             : base(dispatcher)
         {
             _channel = channel;
+            _users = new ObservableCollection<string>();
+            foreach (var u in channel.Users.OrderBy(un => un))
+                _users.Add(u);
         }
 
         public override string Name
         {
             get { return _channel.Name; } 
+        }
+
+        public override ObservableCollection<string> Users
+        {
+            get { return _users; }
         }
 
         public string Topic

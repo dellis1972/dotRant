@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Windows.Threading;
@@ -18,6 +19,7 @@ namespace dotRant.TestWpfClient
         }
 
         public abstract string Name { get; }
+        public abstract ObservableCollection<string> Users { get; }
         public ObservableCollection<IrcEntry> Entries
         {
             get { return _entries; }
