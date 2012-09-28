@@ -37,9 +37,18 @@ namespace dotRant.TestWpfClient
                 var text = tb.Text;
                 tb.Text = "";
 
-                var index = Channels.SelectedIndex;
-                var buffer = _vm.Buffers[index];
-                buffer.SendTo(text);
+                string[] args = text.Split();
+
+                if (args[0] == "/join" || args[0] == "/j")
+                {
+                    _conn.SendRawCommand("JOIN " + args[1]);
+                }
+                else
+                {
+                    var index = Channels.SelectedIndex;
+                    var buffer = _vm.Buffers[index];
+                    buffer.SendTo(text);
+                }
             }
         }
     }
