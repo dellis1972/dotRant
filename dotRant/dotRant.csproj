@@ -46,6 +46,7 @@
     <Compile Include="IIrcConnection.cs" />
     <Compile Include="IIrcIdentity.cs" />
     <Compile Include="IIrcTarget.cs" />
+    <Compile Include="IIrcUser.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="IrcChannel.cs" />
     <Compile Include="IrcCommandAttribute.cs" />
@@ -53,7 +54,11 @@
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcConnection.Handling.cs" />
     <Compile Include="IrcConnectionFactory.cs" />
+    <Compile Include="IrcCurrentUser.cs" />
     <Compile Include="IrcLogger.cs" />
+    <Compile Include="IrcUser.cs" />
+    <Compile Include="MessageEventArgs.cs" />
+    <Compile Include="NickEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

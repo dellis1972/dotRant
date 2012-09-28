@@ -116,6 +116,7 @@ namespace dotRant
         IConnectionFactory _connFactory;
 
         readonly ChannelList _channelList;
+        readonly IIrcUser _user;
 
         static CancellationToken _outCancelToken = new CancellationToken(true);
         static readonly object _outLock = new object();
@@ -136,6 +137,7 @@ namespace dotRant
             _logger = new IrcLogger(this, loggerFactory.GetLogger(this));
             _connFactory = connectionFactory;
             _channelList = new ChannelList(this);
+            _user = new IrcCurrentUser(this);
         }
 
         public event EventHandler<CommandEventArgs> RawMessageIn;
@@ -143,6 +145,8 @@ namespace dotRant
         public event EventHandler<ExceptionEventArgs> UnhandledException;
         public event EventHandler<ChannelEventArgs> Join;
         public event EventHandler<ChannelNameEventArgs> Part;
+        public event EventHandler<NickEventArgs> NickChanged;
+        public event EventHandler<MessageEventArgs> Message;
         public event EventHandler<ChannelTopicEventArgs> ChannelTopicChanged;
 
         private void OnRawMessageIn(string message)
@@ -169,16 +173,28 @@ namespace dotRant
                 Join(this, new ChannelEventArgs(channel));
         }
 
+        private void OnPart(string channelName)
+        {
+            if (Part != null)
+                Part(this, new ChannelNameEventArgs(channelName));
+        }
+
         private void OnChannelTopicChanged(IrcChannel channel, string oldTopic)
         {
             if (ChannelTopicChanged != null)
                 ChannelTopicChanged(this, new ChannelTopicEventArgs(channel, oldTopic));
         }
 
-        private void OnPart(string channelName)
+        private void OnNickChanged(string oldNick, string newNick)
         {
-            if (Part != null)
-                Part(this, new ChannelNameEventArgs(channelName));
+            if (NickChanged != null)
+                NickChanged(this, new NickEventArgs(oldNick, newNick));
+        }
+
+        private void OnMessage(string message, IIrcTarget receiver, string sender)
+        {
+            if (Message != null)
+                Message(this, new MessageEventArgs(message, receiver, sender));
         }
 
         public IChannelList Channels

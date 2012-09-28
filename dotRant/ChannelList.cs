@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,16 @@ namespace dotRant
         public int Count
         {
             get { throw new NotImplementedException(); }
+        }
+
+        IEnumerator<IIrcChannel> IEnumerable<IIrcChannel>.GetEnumerator()
+        {
+            return _connection._channels.OrderBy(c => c.Key).Select(c => c.Value).Cast<IIrcChannel>().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<IIrcChannel>)this).GetEnumerator();
         }
     }
 }

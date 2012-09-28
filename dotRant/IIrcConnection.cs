@@ -13,7 +13,9 @@ namespace dotRant
         event EventHandler<CommandEventArgs> RawMessageOut;
         event EventHandler<ChannelEventArgs> Join;
         event EventHandler<ChannelNameEventArgs> Part;
+        event EventHandler<NickEventArgs> NickChanged;
         event EventHandler<ChannelTopicEventArgs> ChannelTopicChanged;
+        event EventHandler<MessageEventArgs> Message;
 
         event EventHandler<ExceptionEventArgs> UnhandledException;
 

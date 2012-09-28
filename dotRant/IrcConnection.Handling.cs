@@ -88,5 +88,24 @@ namespace dotRant
                 _nick = args[0];
             }
         }
+
+        [IrcCommand("PRIVMSG")]
+        async Task HandleMessage(string prefix, string command, string[] args)
+        {
+            var client = ParseClient(prefix); // sender
+
+            var receiver = args[0];
+            var message = args[1];
+
+            IIrcTarget rec;
+            if (IsChannel(receiver))
+                rec = GetChannel(receiver);
+            else if (receiver == _nick)
+                rec = _user;
+            else
+                throw new InvalidOperationException();
+
+            OnMessage(message, rec, client._nick);
+        }
     }
 }

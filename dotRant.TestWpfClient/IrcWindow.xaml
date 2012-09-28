@@ -1,0 +1,42 @@
+﻿<Window x:Class="dotRant.TestWpfClient.IrcWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="IrcWindow" Height="300" Width="700" MinWidth="700">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <ListBox ItemsSource="{Binding Buffers}" Grid.RowSpan="2" IsSynchronizedWithCurrentItem="True" x:Name="Channels">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <ListBox ItemsSource="{Binding Buffers/Entries}" Grid.Column="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Content}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Text="{Binding Nick}" />
+            
+            <TextBox Grid.Column="1" KeyDown="TextBox_KeyDown" />
+        </Grid>
+    </Grid>
+</Window>

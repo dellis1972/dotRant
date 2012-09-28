@@ -8,13 +8,13 @@ namespace dotRant
 {
     partial class IrcConnection
     {
-        readonly Dictionary<string, IrcChannel> _channels = new Dictionary<string, IrcChannel>();
+        internal readonly Dictionary<string, IrcChannel> _channels = new Dictionary<string, IrcChannel>();
         readonly Dictionary<string, Guid> _nicks = new Dictionary<string, Guid>();
         readonly Dictionary<Guid, string> _nicksRev = new Dictionary<Guid, string>();
 
         internal Task<IIrcChannel> JoinChannel(string name, string password)
         {
-            if (name[0] != '#' && name[0] != '+')
+            if (!IsChannel(name))
             {
                 name = '#' + name;
             }
@@ -49,6 +49,11 @@ namespace dotRant
                 channel._loaded = new TaskCompletionSource<IIrcChannel>();
                 return channel._loaded.Task;
             }
+        }
+
+        internal bool IsChannel(string name)
+        {
+            return name[0] == '#' || name[0] == '+';
         }
 
         internal IrcChannel GetChannel(string name)

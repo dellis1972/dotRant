@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dotRant
 {
-    public interface IChannelList
+    public interface IChannelList : IEnumerable<IIrcChannel>
     {
         Task<IIrcChannel> Join(string name, string password = null);
         IIrcChannel this[int index] { get; }

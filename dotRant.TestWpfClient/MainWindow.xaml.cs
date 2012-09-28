@@ -43,6 +43,7 @@ namespace dotRant.TestWpfClient
             await conn.Connect();
             //MessageBox.Show("Connected");
             var channel = await conn.Channels.Join("#watashiwaten");
+            new IrcWindow(conn).Show();
             //MessageBox.Show("Joined");
             //await channel.Send("Found users: " + String.Join(", ", channel.Users));
             //MessageBox.Show("Sent");
