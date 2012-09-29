@@ -70,13 +70,16 @@ namespace dotRant
             }
         }
 
-        internal Guid Name(string nick)
+        internal Guid Name(string nick, bool create = true)
         {
             lock (_nicks)
             {
                 Guid ret;
                 if (!_nicks.TryGetValue(nick, out ret))
                 {
+                    if (!create)
+                        throw new InvalidOperationException();
+
                     ret = Guid.NewGuid();
                     _nicks.Add(nick, ret);
                     _nicksRev.Add(ret, nick);
@@ -117,6 +120,22 @@ namespace dotRant
                     }
                 }
             }
+            else
+            {
+                lock (_channels)
+                {
+                    IrcChannel channel;
+                    if (_channels.TryGetValue(args[0], out channel))
+                    {
+                        channel.AddName(client._nick);
+                        _channelList.OnUserJoined(channel, channel._userList[client._nick]);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+            }
         }
 
         [IrcCommand("PART")]
@@ -140,6 +159,20 @@ namespace dotRant
                         return;
                     }
                     throw new InvalidOperationException(Resources.PartedNonJoinedChannel);
+                }
+            }
+            else
+            {
+                lock (_channels)
+                {
+                    IrcChannel channel;
+                    if (_channels.TryGetValue(args[0], out channel))
+                    {
+                        var user = channel.RemoveName(client._nick);
+                        _channelList.OnUserParted(channel, user);
+                        return;
+                    }
+                    throw new InvalidOperationException();
                 }
             }
         }
@@ -206,7 +239,7 @@ namespace dotRant
                     channel._topic = args[1];
                     channel._topicCreator = client._nick;
                     channel._topicTime = DateTime.Now;
-                    OnChannelTopicChanged(channel, oldTopic);
+                    _channelList.OnTopicChanged(channel, oldTopic);
                     return;
                 }
                 throw new InvalidOperationException();

@@ -179,12 +179,6 @@ namespace dotRant
                 Part(this, new ChannelNameEventArgs(channelName));
         }
 
-        private void OnChannelTopicChanged(IrcChannel channel, string oldTopic)
-        {
-            if (ChannelTopicChanged != null)
-                ChannelTopicChanged(this, new ChannelTopicEventArgs(channel, oldTopic));
-        }
-
         private void OnNickChanged(string oldNick, string newNick)
         {
             if (NickChanged != null)

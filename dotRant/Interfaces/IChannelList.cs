@@ -12,5 +12,9 @@ namespace dotRant
         IIrcChannel this[int index] { get; }
         IIrcChannel this[string name] { get; }
         int Count { get; }
+
+        event EventHandler<ChannelTopicEventArgs> TopicChanged;
+        event EventHandler<ChannelUserEventArgs> UserJoined;
+        event EventHandler<ChannelUserEventArgs> UserParted;
     }
 }

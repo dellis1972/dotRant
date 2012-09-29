@@ -10,14 +10,14 @@ namespace dotRant.TestWpfClient
     class ChannelViewModel : BufferViewModel
     {
         IIrcChannel _channel;
-        readonly ObservableCollection<string> _users;
+        readonly ObservableCollection<IIrcChannelUser> _users;
 
         public ChannelViewModel(Dispatcher dispatcher, IIrcChannel channel)
             : base(dispatcher)
         {
             _channel = channel;
-            _users = new ObservableCollection<string>();
-            foreach (var u in channel.Users.OrderBy(un => un))
+            _users = new ObservableCollection<IIrcChannelUser>();
+            foreach (var u in channel.Users.OrderBy(un => un.Name))
                 _users.Add(u);
         }
 
@@ -26,7 +26,7 @@ namespace dotRant.TestWpfClient
             get { return _channel.Name; } 
         }
 
-        public override ObservableCollection<string> Users
+        public override ObservableCollection<IIrcChannelUser> Users
         {
             get { return _users; }
         }

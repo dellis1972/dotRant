@@ -19,7 +19,7 @@ namespace dotRant.TestWpfClient
         }
 
         public abstract string Name { get; }
-        public abstract ObservableCollection<string> Users { get; }
+        public abstract ObservableCollection<IIrcChannelUser> Users { get; }
         public ObservableCollection<IrcEntry> Entries
         {
             get { return _entries; }

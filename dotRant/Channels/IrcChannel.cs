@@ -16,10 +16,23 @@ namespace dotRant
             Parting
         }
 
-        readonly IrcConnection _connection;
+        internal enum UserMode
+        {
+            None,
+            HalfVoice,
+            Voice,
+            HalfOp,
+            Op,
+            HalfAdmin,
+            Admin
+        }
+
+        internal readonly IrcConnection _connection;
+        internal readonly ChannelUserList _userList;
         readonly string _name;
-        readonly List<Guid> _users;
-        readonly Dictionary<Guid, string> _userStates;
+        internal readonly List<Guid> _users;
+        internal readonly Dictionary<Guid, UserMode> _userStates;
+        internal readonly Dictionary<Guid, IrcChannelUser> _userObjects;
 
         internal volatile TaskCompletionSource<IIrcChannel> _loaded;
         internal volatile State _state;
@@ -33,9 +46,11 @@ namespace dotRant
             _connection = connection;
             _name = name;
             _users = new List<Guid>();
-            _userStates = new Dictionary<Guid, string>();
+            _userStates = new Dictionary<Guid, UserMode>();
             _loaded = new TaskCompletionSource<IIrcChannel>();
             _state = State.WaitingForJoin;
+            _userList = new ChannelUserList(this);
+            _userObjects = new Dictionary<Guid, IrcChannelUser>();
         }
 
         public string Name
@@ -75,13 +90,11 @@ namespace dotRant
             get { return _connection; }
         }
 
-        public IList<string> Users
+        public IIrcChannelUserList Users
         {
             get
             {
-                return _users
-                    .Select(_connection.Name)
-                    .ToList();
+                return _userList;
             }
         }
 
@@ -95,7 +108,16 @@ namespace dotRant
             var prefixes = ParsePrefixes(ref name);
             Guid nameGuid = _connection.Name(name);
             _users.Add(nameGuid);
-            _userStates.Add(nameGuid, prefixes);
+            _userStates.Add(nameGuid, ModeFromPrefixes(prefixes));
+        }
+
+        internal IrcChannelUser RemoveName(string name)
+        {
+            var user = _userList[name];
+            _users.Remove(user._guid);
+            _userStates.Remove(user._guid);
+            _userObjects.Remove(user._guid);
+            return user;
         }
 
         private string ParsePrefixes(ref string name)
@@ -107,6 +129,17 @@ namespace dotRant
                 name = name.Substring(1);
             }
             return prefixes.ToString();
+        }
+
+        private UserMode ModeFromPrefixes(string prefixes)
+        {
+            switch (prefixes)
+            {
+                case "@": return UserMode.Op;
+                case "!": return UserMode.Admin;
+                case "+": return UserMode.Voice;
+            }
+            return UserMode.None;
         }
     }
 }

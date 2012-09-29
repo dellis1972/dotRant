@@ -36,6 +36,8 @@ namespace dotRant
             get { throw new NotImplementedException(); }
         }
 
+        #region IEnumerable
+
         IEnumerator<IIrcChannel> IEnumerable<IIrcChannel>.GetEnumerator()
         {
             return _connection._channels.OrderBy(c => c.Key).Select(c => c.Value).Cast<IIrcChannel>().GetEnumerator();
@@ -45,5 +47,33 @@ namespace dotRant
         {
             return ((IEnumerable<IIrcChannel>)this).GetEnumerator();
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<ChannelTopicEventArgs> TopicChanged;
+        public event EventHandler<ChannelUserEventArgs> UserJoined;
+        public event EventHandler<ChannelUserEventArgs> UserParted;
+
+        internal void OnTopicChanged(IrcChannel channel, string oldTopic)
+        {
+            if (TopicChanged != null)
+                TopicChanged(_connection, new ChannelTopicEventArgs(channel, oldTopic));
+        }
+
+        internal void OnUserJoined(IrcChannel channel, IrcChannelUser user)
+        {
+            if (UserJoined != null)
+                UserJoined(_connection, new ChannelUserEventArgs(channel, user));
+        }
+
+        internal void OnUserParted(IrcChannel channel, IrcChannelUser user)
+        {
+            if (UserParted != null)
+                UserParted(_connection, new ChannelUserEventArgs(channel, user));
+        }
+
+        #endregion
     }
 }

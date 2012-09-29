@@ -29,5 +29,10 @@ namespace dotRant
         {
             get { return _conn.Nick; }
         }
+
+        public int CompareTo(IIrcUser other)
+        {
+            return Name.CompareTo(other.Name);
+        }
     }
 }

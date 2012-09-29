@@ -30,6 +30,30 @@ namespace dotRant.TestWpfClient
             _conn.Join += _conn_Join;
             _conn.Part += _conn_Part;
             _conn.Message += _conn_Message;
+            _conn.Channels.UserJoined += _conn_Channels_UserJoined;
+            _conn.Channels.UserParted += _conn_Channels_UserParted;
+        }
+
+        void _conn_Channels_UserParted(object sender, ChannelUserEventArgs e)
+        {
+            _dispatcher.BeginInvoke((Action)delegate
+            {
+                var buff = (ChannelViewModel)_buffers.SingleOrDefault(b => b.Name == e.Channel.Name);
+                buff.Users.Remove(e.User);
+            });
+        }
+
+        void _conn_Channels_UserJoined(object sender, ChannelUserEventArgs e)
+        {
+            _dispatcher.BeginInvoke((Action)delegate
+            {
+                var buff = (ChannelViewModel)_buffers.SingleOrDefault(b => b.Name == e.Channel.Name);
+                IIrcChannelUser[] users = new IIrcChannelUser[buff.Users.Count + 1];
+                buff.Users.CopyTo(users, 0);
+                users[users.Length - 1] = e.User;
+                Array.Sort(users);
+                buff.Users.Insert(users.ToList().IndexOf(e.User), e.User);
+            });
         }
 
         void _conn_Message(object sender, MessageEventArgs e)

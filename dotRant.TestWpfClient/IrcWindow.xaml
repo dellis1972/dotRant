@@ -32,7 +32,7 @@
         <ListBox ItemsSource="{Binding Buffers/Users}" Grid.Column="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" />
+                    <TextBlock Text="{Binding Name}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
