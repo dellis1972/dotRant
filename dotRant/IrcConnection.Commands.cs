@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dotRant
 {
-    class IrcConnection
+    partial class IrcConnection
     {
 
     }

@@ -51,6 +51,7 @@
     <Compile Include="IrcChannel.cs" />
     <Compile Include="IrcCommandAttribute.cs" />
     <Compile Include="IrcConnection.Channels.cs" />
+    <Compile Include="IrcConnection.Commands.cs" />
     <Compile Include="IrcConnection.cs" />
     <Compile Include="IrcConnection.Handling.cs" />
     <Compile Include="IrcConnectionFactory.cs" />
