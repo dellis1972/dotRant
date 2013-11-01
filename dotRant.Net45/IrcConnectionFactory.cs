@@ -24,7 +24,7 @@ namespace dotRant.Net45
             get { return this; }
         }
 
-        async Task<Stream> IConnectionFactory.Connect(string hostname, int port, bool useSsl)
+        async Task<StreamWrapper> IConnectionFactory.Connect(string hostname, int port, bool useSsl)
         {
             TcpClient client = new TcpClient();
             client.NoDelay = true;
@@ -33,9 +33,10 @@ namespace dotRant.Net45
             {
                 SslStream sslStream = new SslStream(client.GetStream());
                 await sslStream.AuthenticateAsClientAsync(hostname);
-                return sslStream;
+		return new StreamWrapper () { InputStream = sslStream, OutputStream = sslStream };
             }
-            return client.GetStream();
+		var stream = client.GetStream();
+		return new StreamWrapper () { InputStream = stream, OutputStream = stream };
         }
 
         ILogger ILoggerFactory.GetLogger(Type type)

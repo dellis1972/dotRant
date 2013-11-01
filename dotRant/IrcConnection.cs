@@ -109,7 +109,7 @@ namespace dotRant
         int _port;
         string _password;
         bool _useSsl;
-        Stream _stream;
+        StreamWrapper _stream;
         StreamReader _reader;
         StreamWriter _writer;
         ILogger _logger;
@@ -259,8 +259,8 @@ namespace dotRant
             _logger.Debug("Connected to server");
 
             var encoding = new UTF8Encoding(false);
-            _reader = new StreamReader(_stream, encoding);
-            _writer = new StreamWriter(_stream, encoding);
+            _reader = new StreamReader(_stream.InputStream, encoding);
+            _writer = new StreamWriter(_stream.OutputStream, encoding);
             _writer.NewLine = CRLF;
 
             StartOutboundThread();
